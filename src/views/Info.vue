@@ -55,7 +55,7 @@
               <tr>
                 <th>
                   <span class="custom-checkbox">
-                    <input type="checkbox" id="selectAll" />
+                    <input type="checkbox" />
                     <label for="selectAll"></label>
                   </span>
                 </th>
@@ -73,196 +73,55 @@
             </thead>
 
             <tbody>
-              <tr>
-                <td>
-                  <span class="custom-checkbox">
-                    <input
-                      type="checkbox"
-                      id="checkbox1"
-                      name="options[]"
-                      value="1"
-                    />
-                    <label for="checkbox1"></label>
-                  </span>
+              <tr v-for="item in responseApi.getList" :key="item.id">
+                <td class="custom-checkbox">
+                  <input type="checkbox" />
+                  <label for="selectAll"></label>
                 </td>
-                <td
-                  v-for="(item, index) in responseApi.getList[0]"
-                  :key="index"
-                >
-                  {{ item }}
+                <td>
+                  {{ item.id }}
+                </td>
+                <td>
+                  {{ item.name }}
+                </td>
+                <td>
+                  {{ item.age }}
+                </td>
+                <td>
+                  {{ item.job }}
+                </td>
+                <td>
+                  {{ item.marriage }}
+                </td>
+                <td>
+                  {{ item.consultantName }}
+                </td>
+                <td>
+                  {{ item.stockAmount }}
+                </td>
+                <td>
+                  {{ item.realEstateAmount }}
+                </td>
+                <td>
+                  {{ item.othersAmount }}
                 </td>
 
                 <td>
-                  <a href="#editEmployeeModal" class="edit" data-toggle="modal"
-                    ><i
-                      class="material-icons"
-                      data-toggle="tooltip"
-                      title="Edit"
-                      >&#xE254;</i
-                    ></a
-                  >
                   <a
-                    href="#deleteEmployeeModal"
-                    class="delete"
+                    href="#editEmployeeModal"
+                    @click="look(item)"
+                    class="edit"
                     data-toggle="modal"
                     ><i
                       class="material-icons"
                       data-toggle="tooltip"
-                      title="Delete"
-                      >&#xE872;</i
-                    ></a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="custom-checkbox">
-                    <input
-                      type="checkbox"
-                      id="checkbox2"
-                      name="options[]"
-                      value="1"
-                    />
-                    <label for="checkbox2"></label>
-                  </span>
-                </td>
-                <td
-                  v-for="(item, index) in responseApi.getList[1]"
-                  :key="index"
-                >
-                  {{ item }}
-                </td>
-                <td>
-                  <a href="#editEmployeeModal" class="edit" data-toggle="modal"
-                    ><i
-                      class="material-icons"
-                      data-toggle="tooltip"
                       title="Edit"
                       >&#xE254;</i
                     ></a
                   >
                   <a
                     href="#deleteEmployeeModal"
-                    class="delete"
-                    data-toggle="modal"
-                    ><i
-                      class="material-icons"
-                      data-toggle="tooltip"
-                      title="Delete"
-                      >&#xE872;</i
-                    ></a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="custom-checkbox">
-                    <input
-                      type="checkbox"
-                      id="checkbox3"
-                      name="options[]"
-                      value="1"
-                    />
-                    <label for="checkbox3"></label>
-                  </span>
-                </td>
-                <td
-                  v-for="(item, index) in responseApi.getList[2]"
-                  :key="index"
-                >
-                  {{ item }}
-                </td>
-                <td>
-                  <a href="#editEmployeeModal" class="edit" data-toggle="modal"
-                    ><i
-                      class="material-icons"
-                      data-toggle="tooltip"
-                      title="Edit"
-                      >&#xE254;</i
-                    ></a
-                  >
-                  <a
-                    href="#deleteEmployeeModal"
-                    class="delete"
-                    data-toggle="modal"
-                    ><i
-                      class="material-icons"
-                      data-toggle="tooltip"
-                      title="Delete"
-                      >&#xE872;</i
-                    ></a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="custom-checkbox">
-                    <input
-                      type="checkbox"
-                      id="checkbox4"
-                      name="options[]"
-                      value="1"
-                    />
-                    <label for="checkbox4"></label>
-                  </span>
-                </td>
-                <td
-                  v-for="(item, index) in responseApi.getList[3]"
-                  :key="index"
-                >
-                  {{ item }}
-                </td>
-                <td>
-                  <a href="#editEmployeeModal" class="edit" data-toggle="modal"
-                    ><i
-                      class="material-icons"
-                      data-toggle="tooltip"
-                      title="Edit"
-                      >&#xE254;</i
-                    ></a
-                  >
-                  <a
-                    href="#deleteEmployeeModal"
-                    class="delete"
-                    data-toggle="modal"
-                    ><i
-                      class="material-icons"
-                      data-toggle="tooltip"
-                      title="Delete"
-                      >&#xE872;</i
-                    ></a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="custom-checkbox">
-                    <input
-                      type="checkbox"
-                      id="checkbox5"
-                      name="options[]"
-                      value="1"
-                    />
-                    <label for="checkbox5"></label>
-                  </span>
-                </td>
-                <td
-                  v-for="(item, index) in responseApi.getList[4]"
-                  :key="index"
-                >
-                  {{ item }}
-                </td>
-                <td>
-                  <a href="#editEmployeeModal" class="edit" data-toggle="modal"
-                    ><i
-                      class="material-icons"
-                      data-toggle="tooltip"
-                      title="Edit"
-                      >&#xE254;</i
-                    ></a
-                  >
-                  <a
-                    href="#deleteEmployeeModal"
+                    @click="look(item)"
                     class="delete"
                     data-toggle="modal"
                     ><i
@@ -280,20 +139,29 @@
             <div class="hint-text">
               Showing <b>5</b> out of <b>25</b> entries
             </div>
-            <b-pagination
-              v-model="pagination.currentPage"
-              :total-rows="pagination.rows"
-              :per-page="pagination.perPage"
-              first-text="First"
-              prev-text="Prev"
-              next-text="Next"
-              last-text="Last"
-            ></b-pagination>
+            <div class="clearfix">
+              <div class="hint-text">
+                Showing <b>5</b> out of <b>25</b> entries
+              </div>
+              <ul class="pagination">
+                <li class="page-item disabled"><a href="#">Previous</a></li>
+                <li class="page-item"><a href="#" class="page-link">1</a></li>
+                <li class="page-item"><a href="#" class="page-link">2</a></li>
+                <li class="page-item active">
+                  <a href="#" class="page-link">3</a>
+                </li>
+                <li class="page-item"><a href="#" class="page-link">4</a></li>
+                <li class="page-item"><a href="#" class="page-link">5</a></li>
+                <li class="page-item">
+                  <a href="#" class="page-link">Next</a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <EditInfo :getList="responseApi.getList"></EditInfo>
+    <EditInfo :editinfo="editinfo.data"></EditInfo>
     <DeleteInfo></DeleteInfo>
   </body>
 </template>
@@ -533,11 +401,10 @@ table.table .avatar {
 
 <script>
 import { onMounted, reactive, onBeforeMount } from "vue";
-import $ from "jquery";
 import DeleteInfo from "@/components/DeleteInfo.vue";
 import EditInfo from "@/components/EditInfo.vue";
 import axios from "axios";
-
+import $ from "jquery";
 export default {
   name: "info",
   setup() {
@@ -546,8 +413,11 @@ export default {
       rows: 6,
       perPage: 1,
     });
+    const editinfo = reactive({
+      data: {},
+    });
     const responseApi = reactive({
-      getList: [],
+      getList: {},
     });
     const getData = async () => {
       try {
@@ -559,16 +429,23 @@ export default {
         console.log("can not get any response");
       }
     };
+    const look = (item) => {
+      editinfo.data = item;
+    };
+    // const tooltip = () => {
+    //   // Activate tooltip
+    //   // $('[data-toggle="tooltip"]').tooltip();
+    // };
+    getData();
+    // tooltip();
 
-    onBeforeMount(() => {
-      getData();
-    });
+    onBeforeMount(() => {});
 
     onMounted(() => {
       var scripts = [
         "https://code.jquery.com/jquery-3.5.1.min.js",
-        "https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js",
         "https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js",
+        "https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js",
       ];
       scripts.forEach((script) => {
         let tag = document.createElement("script");
@@ -600,7 +477,7 @@ export default {
         });
       });
     });
-    return { responseApi, pagination };
+    return { responseApi, pagination, look, editinfo };
   },
   components: {
     EditInfo,

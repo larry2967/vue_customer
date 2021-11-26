@@ -97,8 +97,7 @@
             </div>
             <div class="form-group">
               <label>PBC</label>
-              <input class="form-control" required />
-              <b>{{ parseData.id }}</b>
+              <input type="object" class="form-control" />
             </div>
 
             <div class="form-group">
@@ -130,29 +129,15 @@
 </template>
 
 <script>
-import { reactive } from "vue";
+// import { reactive } from "vue";
 export default {
   name: "EditInfo",
   props: {
-    getList: Array,
+    editinfo: Object,
   },
 
   setup(props) {
-    const parseData = reactive({
-      id: [],
-    });
-    const parse = () => {
-      parseData.id = [
-        props.getList[0].id,
-        props.getList[1].id,
-        props.getList[2].id,
-        props.getList[3].id,
-        props.getList[4].id,
-      ];
-    };
-    parse();
-
-    return { parseData };
+    console.log(props.editinfo);
   },
 };
 </script>
