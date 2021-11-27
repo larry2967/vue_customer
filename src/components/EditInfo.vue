@@ -81,36 +81,75 @@
           <div class="modal-body">
             <div class="form-group">
               <label>Name</label>
-              <input type="text" class="form-control" required />
+              <input
+                :value="editInfo.name"
+                type="text"
+                class="form-control"
+                required
+              />
             </div>
             <div class="form-group">
               <label>Age</label>
-              <input type="number" class="form-control" required />
+              <input
+                :value="editInfo.age"
+                type="number"
+                class="form-control"
+                required
+              />
             </div>
             <div class="form-group">
               <label>Job</label>
-              <text type="text" class="form-control" required></text>
+              <input
+                :value="editInfo.job"
+                type="text"
+                class="form-control"
+                required
+              />
             </div>
             <div class="form-group">
               <label>Marriage</label>
-              <input type="text" class="form-control" required />
+              <input
+                :value="editInfo.marriage"
+                type="text"
+                class="form-control"
+                required
+              />
             </div>
             <div class="form-group">
               <label>PBC</label>
-              <input type="object" class="form-control" />
+              <input
+                :value="editInfo.consultantName"
+                type="text"
+                class="form-control"
+              />
             </div>
 
             <div class="form-group">
               <label>Stock</label>
-              <input type="number" class="form-control" required />
+              <input
+                :value="editInfo.stockAmount"
+                type="number"
+                class="form-control"
+                required
+              />
             </div>
             <div class="form-group">
               <label>Real Estate</label>
-              <input type="number" class="form-control" required />
+              <input
+                :value="editInfo.realEstateAmount"
+                type="number"
+                class="form-control"
+                required
+              />
             </div>
             <div class="form-group">
               <label>Others</label>
-              <input type="number" class="form-control" required />
+              <input
+                :value="editInfo.othersAmount"
+                type="number"
+                class="form-control"
+                required
+              />
             </div>
           </div>
           <div class="modal-footer">
@@ -129,15 +168,25 @@
 </template>
 
 <script>
+import { watch } from "vue";
 // import { reactive } from "vue";
 export default {
   name: "EditInfo",
   props: {
-    editinfo: Object,
+    editInfo: {
+      type: Object,
+      required: true,
+      default: () => {},
+    },
   },
 
   setup(props) {
-    console.log(props.editinfo);
+    watch(
+      () => props.editInfo,
+      () => {
+        console.log(props.editInfo);
+      }
+    );
   },
 };
 </script>

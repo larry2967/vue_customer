@@ -140,9 +140,6 @@
               Showing <b>5</b> out of <b>25</b> entries
             </div>
             <div class="clearfix">
-              <div class="hint-text">
-                Showing <b>5</b> out of <b>25</b> entries
-              </div>
               <ul class="pagination">
                 <li class="page-item disabled"><a href="#">Previous</a></li>
                 <li class="page-item"><a href="#" class="page-link">1</a></li>
@@ -161,7 +158,7 @@
         </div>
       </div>
     </div>
-    <EditInfo :editinfo="editinfo.data"></EditInfo>
+    <EditInfo :editInfo="editInfo.data"></EditInfo>
     <DeleteInfo></DeleteInfo>
   </body>
 </template>
@@ -413,7 +410,7 @@ export default {
       rows: 6,
       perPage: 1,
     });
-    const editinfo = reactive({
+    const editInfo = reactive({
       data: {},
     });
     const responseApi = reactive({
@@ -430,7 +427,8 @@ export default {
       }
     };
     const look = (item) => {
-      editinfo.data = item;
+      editInfo.data = item;
+      // console.log(item);
     };
     // const tooltip = () => {
     //   // Activate tooltip
@@ -477,7 +475,7 @@ export default {
         });
       });
     });
-    return { responseApi, pagination, look, editinfo };
+    return { responseApi, pagination, look, editInfo };
   },
   components: {
     EditInfo,
