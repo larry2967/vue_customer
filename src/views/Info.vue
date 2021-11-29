@@ -112,24 +112,14 @@
                     @click="look(item)"
                     class="edit"
                     data-toggle="modal"
-                    ><i
-                      class="material-icons"
-                      data-toggle="tooltip"
-                      title="Edit"
-                      >&#xE254;</i
-                    ></a
+                    ><i class="material-icons" title="Edit">&#xE254;</i></a
                   >
                   <a
                     href="#deleteEmployeeModal"
                     @click="look(item)"
                     class="delete"
                     data-toggle="modal"
-                    ><i
-                      class="material-icons"
-                      data-toggle="tooltip"
-                      title="Delete"
-                      >&#xE872;</i
-                    ></a
+                    ><i class="material-icons" title="Delete">&#xE872;</i></a
                   >
                 </td>
               </tr>
@@ -137,7 +127,7 @@
           </table>
           <div class="clearfix">
             <div class="hint-text">
-              Showing <b>5</b> out of <b>25</b> entries
+              Showing <b>10</b> out of <b>25</b> entries
             </div>
             <div class="clearfix">
               <ul class="pagination">
@@ -158,8 +148,15 @@
         </div>
       </div>
     </div>
-    <EditInfo :editInfo="editInfo.data"></EditInfo>
-    <DeleteInfo></DeleteInfo>
+    <EditInfo
+      v-model:editInfo="editInfo.data"
+      @putApi="putData"
+      @postApi="postData"
+    ></EditInfo>
+    <DeleteInfo
+      v-model:editInfo="editInfo.data"
+      @deleteApi="deleteData"
+    ></DeleteInfo>
   </body>
 </template>
 
@@ -401,15 +398,11 @@ import { onMounted, reactive, onBeforeMount } from "vue";
 import DeleteInfo from "@/components/DeleteInfo.vue";
 import EditInfo from "@/components/EditInfo.vue";
 import axios from "axios";
-import $ from "jquery";
+
 export default {
   name: "info",
   setup() {
-    const pagination = reactive({
-      currentPage: 1,
-      rows: 6,
-      perPage: 1,
-    });
+    const changePage = "string";
     const editInfo = reactive({
       data: {},
     });
@@ -426,16 +419,64 @@ export default {
         console.log("can not get any response");
       }
     };
+    const putData = async () => {
+      try {
+        console.log("put" + JSON.stringify(editInfo.data));
+        await axios({
+          method: "put",
+          url: "/api/customers/" + editInfo.data.id,
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+          data: editInfo.data,
+        });
+
+        console.log("success!");
+      } catch (error) {
+        console.log(error);
+        console.log("can not put data");
+      }
+    };
+    const deleteData = async () => {
+      try {
+        console.log("delete" + JSON.stringify(editInfo.data));
+        await axios({
+          method: "delete",
+          url: "/api/customers/" + editInfo.data.id,
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+        });
+
+        console.log("success!");
+      } catch (error) {
+        console.log(error);
+        console.log("can not delete data");
+      }
+    };
+    const postData = async (addData) => {
+      try {
+        console.log("post" + JSON.stringify(addData));
+        await axios({
+          method: "post",
+          url: "/api/customers/",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+          data: addData,
+        });
+
+        console.log("success!");
+      } catch (error) {
+        console.log(error);
+        console.log("can not post data");
+      }
+    };
     const look = (item) => {
       editInfo.data = item;
-      // console.log(item);
     };
-    // const tooltip = () => {
-    //   // Activate tooltip
-    //   // $('[data-toggle="tooltip"]').tooltip();
-    // };
+
     getData();
-    // tooltip();
 
     onBeforeMount(() => {});
 
@@ -448,34 +489,18 @@ export default {
       scripts.forEach((script) => {
         let tag = document.createElement("script");
         tag.setAttribute("src", script);
-        document.head.appendChild(tag);
-      });
-
-      $(document).ready(function () {
-        // Activate tooltip
-        $('[data-toggle="tooltip"]').tooltip();
-
-        // Select/Deselect checkboxes
-        var checkbox = $('table tbody input[type="checkbox"]');
-        $("#selectAll").click(function () {
-          if (this.checked) {
-            checkbox.each(function () {
-              this.checked = true;
-            });
-          } else {
-            checkbox.each(function () {
-              this.checked = false;
-            });
-          }
-        });
-        checkbox.click(function () {
-          if (!this.checked) {
-            $("#selectAll").prop("checked", false);
-          }
-        });
+        document.body.appendChild(tag);
       });
     });
-    return { responseApi, pagination, look, editInfo };
+    return {
+      responseApi,
+      look,
+      editInfo,
+      changePage,
+      putData,
+      deleteData,
+      postData,
+    };
   },
   components: {
     EditInfo,

@@ -18,35 +18,75 @@
           <div class="modal-body">
             <div class="form-group">
               <label>Name</label>
-              <input type="text" class="form-control" required />
+              <input
+                type="text"
+                v-model="addData.name"
+                class="form-control"
+                required
+              />
             </div>
             <div class="form-group">
               <label>Age</label>
-              <input type="email" class="form-control" required />
+              <input
+                type="number"
+                v-model="addData.age"
+                class="form-control"
+                required
+              />
             </div>
             <div class="form-group">
               <label>Job</label>
-              <textarea class="form-control" required></textarea>
+              <input
+                type="text"
+                class="form-control"
+                v-model="addData.job"
+                required
+              />
             </div>
             <div class="form-group">
               <label>Marriage</label>
-              <input type="text" class="form-control" required />
+              <input
+                type="text"
+                class="form-control"
+                v-model="addData.marriage"
+                required
+              />
             </div>
             <div class="form-group">
               <label>PBC</label>
-              <input type="text" class="form-control" required />
+              <input
+                type="text"
+                class="form-control"
+                v-model="addData.consultantName"
+                required
+              />
             </div>
             <div class="form-group">
               <label>Stock</label>
-              <input type="text" class="form-control" required />
+              <input
+                type="number"
+                class="form-control"
+                v-model="addData.stockAmount"
+                required
+              />
             </div>
             <div class="form-group">
               <label>Real Estate</label>
-              <input type="text" class="form-control" required />
+              <input
+                type="number"
+                class="form-control"
+                v-model="addData.realEstateAmount"
+                required
+              />
             </div>
             <div class="form-group">
               <label>Others</label>
-              <input type="text" class="form-control" required />
+              <input
+                type="number"
+                class="form-control"
+                v-model="addData.othersAmount"
+                required
+              />
             </div>
           </div>
           <div class="modal-footer">
@@ -56,7 +96,13 @@
               data-dismiss="modal"
               value="Cancel"
             />
-            <input type="submit" class="btn btn-success" value="Add" />
+            <input
+              type="submit"
+              v-on:click="postApi(addData)"
+              class="btn btn-success"
+              data-dismiss="modal"
+              value="Add"
+            />
           </div>
         </form>
       </div>
@@ -82,7 +128,7 @@
             <div class="form-group">
               <label>Name</label>
               <input
-                :value="editInfo.name"
+                v-model="localData.name"
                 type="text"
                 class="form-control"
                 required
@@ -91,7 +137,7 @@
             <div class="form-group">
               <label>Age</label>
               <input
-                :value="editInfo.age"
+                v-model="localData.age"
                 type="number"
                 class="form-control"
                 required
@@ -100,7 +146,7 @@
             <div class="form-group">
               <label>Job</label>
               <input
-                :value="editInfo.job"
+                v-model="localData.job"
                 type="text"
                 class="form-control"
                 required
@@ -109,7 +155,7 @@
             <div class="form-group">
               <label>Marriage</label>
               <input
-                :value="editInfo.marriage"
+                v-model="localData.marriage"
                 type="text"
                 class="form-control"
                 required
@@ -118,7 +164,7 @@
             <div class="form-group">
               <label>PBC</label>
               <input
-                :value="editInfo.consultantName"
+                v-model="localData.consultantName"
                 type="text"
                 class="form-control"
               />
@@ -127,7 +173,7 @@
             <div class="form-group">
               <label>Stock</label>
               <input
-                :value="editInfo.stockAmount"
+                v-model="localData.stockAmount"
                 type="number"
                 class="form-control"
                 required
@@ -136,7 +182,7 @@
             <div class="form-group">
               <label>Real Estate</label>
               <input
-                :value="editInfo.realEstateAmount"
+                v-model="localData.realEstateAmount"
                 type="number"
                 class="form-control"
                 required
@@ -145,7 +191,7 @@
             <div class="form-group">
               <label>Others</label>
               <input
-                :value="editInfo.othersAmount"
+                v-model="localData.othersAmount"
                 type="number"
                 class="form-control"
                 required
@@ -159,7 +205,13 @@
               data-dismiss="modal"
               value="Cancel"
             />
-            <input type="submit" class="btn btn-info" value="Save" />
+            <input
+              type="button"
+              v-on:click="putApi()"
+              class="btn btn-info"
+              data-dismiss="modal"
+              value="Save"
+            />
           </div>
         </form>
       </div>
@@ -168,8 +220,8 @@
 </template>
 
 <script>
-import { watch } from "vue";
-// import { reactive } from "vue";
+import { reactive, computed } from "vue";
+
 export default {
   name: "EditInfo",
   props: {
@@ -179,14 +231,32 @@ export default {
       default: () => {},
     },
   },
+  emit: ["postApi", "putApi"],
+  setup(props, { emit }) {
+    const addData = reactive({
+      id: { type: Number, default: 1 },
+      name: { type: String, default: "john snow" },
+      age: { type: Number, default: null },
+      job: { type: String, default: null },
+      marriage: { type: String, default: null },
+      consultantName: { type: String, default: null },
+      stockAmount: { type: Number, default: null },
+      realEstateAmount: { type: Number, default: null },
+      othersAmount: { type: Number, default: null },
+    });
+    const postApi = (addData) => {
+      emit("postApi", addData);
+    };
 
-  setup(props) {
-    watch(
-      () => props.editInfo,
-      () => {
-        console.log(props.editInfo);
-      }
-    );
+    const localData = computed({
+      get: () => props.editInfo,
+      set: (value) => emit("updateInfo", value),
+    });
+    const putApi = () => {
+      emit("putApi");
+    };
+
+    return { localData, addData, putApi, postApi };
   },
 };
 </script>

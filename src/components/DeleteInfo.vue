@@ -28,7 +28,13 @@
               data-dismiss="modal"
               value="Cancel"
             />
-            <input type="submit" class="btn btn-danger" value="Delete" />
+            <input
+              type="submit"
+              v-on:click="deleteApi()"
+              class="btn btn-danger"
+              data-dismiss="modal"
+              value="Delete"
+            />
           </div>
         </form>
       </div>
@@ -37,7 +43,33 @@
 </template>
 
 <script>
+import { computed } from "vue";
 export default {
   name: "DeleteInfo",
+  props: {
+    editInfo: {
+      type: Object,
+      required: true,
+      default: () => {},
+    },
+  },
+  emit: ["deleteApi"],
+  setup(props, { emit }) {
+    const localData = computed({
+      get: () => props.editInfo,
+      set: (value) => emit("deleteInfo", value),
+    });
+    const deleteApi = () => {
+      emit("deleteApi");
+    };
+
+    // watch(
+    //   () => props.editInfo,
+    //   () => {
+    //     console.log(props.editInfo);
+    //   }
+    // );
+    return { localData, deleteApi };
+  },
 };
 </script>
