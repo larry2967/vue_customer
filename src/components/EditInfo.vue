@@ -234,12 +234,11 @@ export default {
   emit: ["postApi", "putApi"],
   setup(props, { emit }) {
     const addData = reactive({
-      id: { type: Number, default: 1 },
-      name: { type: String, default: "john snow" },
+      name: "",
       age: { type: Number, default: null },
-      job: { type: String, default: null },
-      marriage: { type: String, default: null },
-      consultantName: { type: String, default: null },
+      job: "",
+      marriage: "",
+      consultantName: "",
       stockAmount: { type: Number, default: null },
       realEstateAmount: { type: Number, default: null },
       othersAmount: { type: Number, default: null },

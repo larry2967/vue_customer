@@ -430,7 +430,7 @@ export default {
           },
           data: editInfo.data,
         });
-
+        getData();
         console.log("success!");
       } catch (error) {
         console.log(error);
@@ -449,6 +449,7 @@ export default {
         });
 
         console.log("success!");
+        getData();
       } catch (error) {
         console.log(error);
         console.log("can not delete data");
@@ -459,7 +460,7 @@ export default {
         console.log("post" + JSON.stringify(addData));
         await axios({
           method: "post",
-          url: "/api/customers/",
+          url: "/api/customers",
           headers: {
             "Content-Type": "application/json;charset=utf-8",
           },
@@ -467,6 +468,7 @@ export default {
         });
 
         console.log("success!");
+        getData();
       } catch (error) {
         console.log(error);
         console.log("can not post data");
@@ -476,9 +478,9 @@ export default {
       editInfo.data = item;
     };
 
-    getData();
-
-    onBeforeMount(() => {});
+    onBeforeMount(() => {
+      getData();
+    });
 
     onMounted(() => {
       var scripts = [
