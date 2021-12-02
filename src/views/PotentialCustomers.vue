@@ -33,7 +33,7 @@
           <div class="table-title">
             <div class="row">
               <div class="col-sm-6">
-                <h2>Manage <b>Customers</b></h2>
+                <h2>Manage Potential<b>Customers</b></h2>
               </div>
               <div class="col-sm-6">
                 <a
@@ -41,7 +41,7 @@
                   class="btn btn-success"
                   data-toggle="modal"
                   ><i class="material-icons">&#xE147;</i>
-                  <span>Add New Customer</span></a
+                  <span>Add New Potential Customer</span></a
                 >
                 <a
                   href="#deleteEmployeeModal"
@@ -61,12 +61,12 @@
                     <label for="selectAll"></label>
                   </span>
                 </th>
+                <th>P_ID</th>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Age</th>
                 <th>Job</th>
                 <th>Marriage</th>
-                <th>PBC</th>
                 <th>Stock</th>
                 <th>Real Estate</th>
                 <th>Others</th>
@@ -79,6 +79,9 @@
                 <td class="custom-checkbox">
                   <input type="checkbox" />
                   <label for="selectAll"></label>
+                </td>
+                <td>
+                  {{ item.fk_customer_id }}
                 </td>
                 <td>
                   {{ item.id }}
@@ -94,9 +97,6 @@
                 </td>
                 <td>
                   {{ item.marriage }}
-                </td>
-                <td>
-                  {{ item.consultantName }}
                 </td>
                 <td>
                   {{ item.stockAmount }}
@@ -150,15 +150,15 @@
         </div>
       </div>
     </div>
-    <EditInfo
+    <EditPotential
       v-model:editInfo="editInfo.data"
       @putApi="putData"
       @postApi="postData"
-    ></EditInfo>
-    <DeleteInfo
+    ></EditPotential>
+    <DeletePotential
       v-model:editInfo="editInfo.data"
       @deleteApi="deleteData"
-    ></DeleteInfo>
+    ></DeletePotential>
   </body>
 </template>
 
@@ -397,8 +397,8 @@ table.table .avatar {
 
 <script>
 import { onMounted, reactive, onBeforeMount } from "vue";
-import DeleteInfo from "@/components/DeleteInfo.vue";
-import EditInfo from "@/components/EditInfo.vue";
+import DeletePotential from "@/components/DeletePotential.vue";
+import EditPotential from "@/components/EditPotential.vue";
 import axios from "axios";
 
 export default {
@@ -413,10 +413,11 @@ export default {
     });
     const getData = async () => {
       try {
-        const response = await axios.get("/api/customers");
+        const response = await axios.get("/api/potential");
+
         console.log("success!");
-        console.log(JSON.stringify(response.data));
         responseApi.getList = response.data;
+        console.log(JSON.stringify(responseApi.getList));
       } catch (error) {
         console.log(error);
         console.log("can not get any response");
@@ -427,7 +428,7 @@ export default {
         console.log("put" + JSON.stringify(editInfo.data));
         await axios({
           method: "put",
-          url: "/api/customers/" + editInfo.data.id,
+          url: "/api/potential/" + editInfo.data.id,
           headers: {
             "Content-Type": "application/json;charset=utf-8",
           },
@@ -445,7 +446,7 @@ export default {
         console.log("delete" + JSON.stringify(editInfo.data));
         await axios({
           method: "delete",
-          url: "/api/customers/" + editInfo.data.id,
+          url: "/api/potential/" + editInfo.data.id,
           headers: {
             "Content-Type": "application/json;charset=utf-8",
           },
@@ -463,7 +464,7 @@ export default {
         console.log("post" + JSON.stringify(addData));
         await axios({
           method: "post",
-          url: "/api/customers",
+          url: "/api/potential",
           headers: {
             "Content-Type": "application/json;charset=utf-8",
           },
@@ -508,8 +509,8 @@ export default {
     };
   },
   components: {
-    EditInfo,
-    DeleteInfo,
+    EditPotential,
+    DeletePotential,
   },
 };
 </script>
