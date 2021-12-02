@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <div>
-      <NavBar></NavBar>
+  <div class="container-fluid">
+    <div class="row">
+      <NavBar class="page-header"></NavBar>
     </div>
-    <div>
-      <SideBar></SideBar>
-      <router-view />
+    <div class="row">
+      <SideBar class="col-md-3"></SideBar>
+      <router-view class="col-md-9" />
     </div>
   </div>
 </template>

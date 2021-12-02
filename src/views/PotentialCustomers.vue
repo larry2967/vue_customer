@@ -19,15 +19,29 @@
     />
     <link
       rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
     />
   </head>
 
   <body>
-    <!-- 搜尋欄位 -->
-    <div></div>
-    <!-- 表格欄位 -->
     <div class="container-xl">
+      <!-- 搜尋欄位 -->
+      <div class="input-group rounded">
+        <input
+          type="search"
+          class="form-control rounded"
+          v-model="searchFilter.search_id"
+          placeholder="Search"
+          aria-label="Search"
+          aria-describedby="search-addon"
+        />
+
+        <button class="btn btn-light" @click="search(searchFilter.search_id)">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
+      <!-- 表格欄位 -->
+
       <div class="table-responsive">
         <div class="table-wrapper">
           <div class="table-title">
@@ -75,7 +89,7 @@
             </thead>
 
             <tbody>
-              <tr v-for="item in responseApi.getList" :key="item.id">
+              <tr v-for="item in searchFilter.data" :key="item.id">
                 <td class="custom-checkbox">
                   <input type="checkbox" />
                   <label for="selectAll"></label>
@@ -404,7 +418,11 @@ import axios from "axios";
 export default {
   name: "info",
   setup() {
-    const changePage = "string";
+    const searchFilter = reactive({
+      search_id: 1,
+      data: {},
+    });
+
     const editInfo = reactive({
       data: {},
     });
@@ -417,7 +435,7 @@ export default {
 
         console.log("success!");
         responseApi.getList = response.data;
-        console.log(JSON.stringify(responseApi.getList));
+        searchFilter.data = response.data;
       } catch (error) {
         console.log(error);
         console.log("can not get any response");
@@ -481,6 +499,19 @@ export default {
     const look = (item) => {
       editInfo.data = item;
     };
+    const search = async (search_id) => {
+      if (search_id.length > 0) {
+        console.log(JSON.stringify(responseApi.getList));
+        searchFilter.data = responseApi.getList.filter(
+          (item) => item.fk_customer_id == search_id
+        );
+        console.log(search_id);
+        console.log(JSON.stringify(searchFilter.data));
+      } else {
+        console.log("空值");
+        searchFilter.data = responseApi.getList;
+      }
+    };
 
     onBeforeMount(() => {
       getData();
@@ -501,8 +532,9 @@ export default {
     return {
       responseApi,
       look,
+      search,
+      searchFilter,
       editInfo,
-      changePage,
       putData,
       deleteData,
       postData,
@@ -518,7 +550,7 @@ export default {
 <style scoped>
 .container-xl {
   /* padding-right: 0px; */
-  padding-left: 65px;
+  padding-left: 0px;
   position: relative;
   /* border-left: 0px; */
 }

@@ -1,6 +1,6 @@
 <template>
-  <div class="container border-end border-1 border-bottom" style="height: 60px">
-    <p>
+  <div class="container" style="height: 60px">
+    <p class="text-center">
       <router-link to="/">
         <img
           src="@/assets/logo.png"

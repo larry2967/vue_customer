@@ -517,7 +517,7 @@ export default {
 <style scoped>
 .container-xl {
   /* padding-right: 0px; */
-  padding-left: 65px;
+  padding-left: 0px;
   position: relative;
   /* border-left: 0px; */
 }
