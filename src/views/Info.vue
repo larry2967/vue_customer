@@ -492,9 +492,11 @@ export default {
         "https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js",
       ];
       scripts.forEach((script) => {
-        let tag = document.createElement("script");
-        tag.setAttribute("src", script);
-        document.body.appendChild(tag);
+        setTimeout(() => {
+          let tag = document.createElement("script");
+          tag.setAttribute("src", script);
+          document.body.appendChild(tag);
+        }, 1000);
       });
     });
     return {
@@ -528,9 +530,7 @@ export default {
 .container-xl {
   max-width: none;
 }
-.table-wrapper[data-v-abb9de30] {
-  background: #f5f5f5;
-}
+
 .table-responsive[data-v-abb9de30] {
   margin: 0px;
 }
