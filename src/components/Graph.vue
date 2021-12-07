@@ -1,8 +1,23 @@
 <template>
-  <!-- * * * * * * * * * * * * * -->
+  <!-- 搜尋欄位 -->
+  <div class="input-group rounded">
+    <input
+      type="search"
+      class="form-control rounded"
+      v-model="inputId"
+      placeholder="Search"
+      aria-label="Search"
+      aria-describedby="search-addon"
+    />
+
+    <button class="btn btn-light" @click="searchId(inputId)">
+      <i class="fa fa-search"></i>
+    </button>
+  </div>
+  <!--圖形欄位-->
   <div
     id="myDiag"
-    style="background-color: white; border: solid 1px black; height: 550px"
+    style="background-color: white; border: solid 1px black; height: 400px"
   ></div>
 
   <div
@@ -32,9 +47,12 @@
 </template>
 <script>
 import go from "gojs";
+import axios from "axios";
 export default {
   data() {
     return {
+      inputId: null,
+      response: {},
       addForm: {},
       selectNode: {},
       myDiagram: null,
@@ -435,6 +453,18 @@ export default {
         "comments",
         document.getElementById("comments").value
       ); //然后对这个对象的属性进行更改
+    },
+    async searchId(id) {
+      try {
+        await axios
+          .get("/api/customers/" + id)
+          .then((response) => (this.response = response.data));
+        console.log("success!");
+        console.log(this.response);
+      } catch (error) {
+        console.log(error);
+        console.log("can not get data");
+      }
     },
   },
   mounted() {
