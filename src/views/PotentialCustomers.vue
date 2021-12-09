@@ -95,7 +95,7 @@
                   <label for="selectAll"></label>
                 </td>
                 <td>
-                  {{ item.fk_customer_id }}
+                  {{ item.fkCustomerId }}
                 </td>
                 <td>
                   {{ item.id }}
@@ -419,7 +419,7 @@ export default {
   name: "info",
   setup() {
     const searchFilter = reactive({
-      search_id: 1,
+      search_id: null,
       data: {},
     });
 
@@ -503,7 +503,7 @@ export default {
       if (search_id.length > 0) {
         console.log(JSON.stringify(responseApi.getList));
         searchFilter.data = responseApi.getList.filter(
-          (item) => item.fk_customer_id == search_id
+          (item) => item.fkCustomerId == search_id
         );
         console.log(search_id);
         console.log(JSON.stringify(searchFilter.data));

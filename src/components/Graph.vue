@@ -10,15 +10,16 @@
       aria-describedby="search-addon"
     />
 
-    <button class="btn btn-light" @click="searchId(inputId)">
-      <i class="fa fa-search"></i>
-    </button>
+    <button id="SearchButton" @click="searchId(inputId)"></button>
+    <button id="SaveButton" @click="save(inputId)">Save</button>
   </div>
   <!--圖形欄位-->
-  <div
-    id="myDiag"
-    style="background-color: white; border: solid 1px black; height: 400px"
-  ></div>
+  <div id="graph">
+    <div
+      id="myDiag"
+      style="background-color: white; border: solid 1px black; height: 400px"
+    ></div>
+  </div>
 
   <div
     id="propertiesPanel"
@@ -34,14 +35,6 @@
     <button type="primary" @click="submitData">更改</button>
   </div>
 
-  <div>
-    <div>
-      <button id="SaveButton" @click="save()">Save</button>
-      <button @click="load()">Load</button>
-      Diagram Model saved in JSON format:
-    </div>
-  </div>
-
   <!-- * * * * * * * * * * * * * -->
   <!--  End of GoJS sample code  -->
 </template>
@@ -51,39 +44,55 @@ import axios from "axios";
 export default {
   data() {
     return {
-      inputId: null,
+      firstRender: true,
+      inputId: 1,
       response: {},
       addForm: {},
       selectNode: {},
       myDiagram: null,
-      nodeData: {
-        class: "go.GraphLinksModel",
-        nodeDataArray: [
-          { key: "1", name: "Arron", title: "The Boss" },
-          { key: "2", name: "Tony", title: "Underboss" },
-          { key: "3", name: "Herman", title: "Advisor" },
-          { key: "4", name: "家樂福", title: "公司" },
-          { key: "5", name: "Ralph", title: "Capo MIA" },
-          { key: "6", name: "Silvio", title: "Consigliere" },
-          { key: "7", name: "統一食品", title: "公司" },
-          { key: "8", name: "Sal", title: "MIA" },
-          { key: "9", name: "台積電", title: "公司" },
-        ],
-        linkDataArray: [
-          { from: "1", to: "2" },
-          { from: "1", to: "3" },
-          { from: "2", to: "4" },
-          { from: "2", to: "5" },
-          { from: "2", to: "6" },
-          { from: "2", to: "7" },
-          { from: "4", to: "8" },
-          { from: "4", to: "9" },
-        ],
-      },
+      nodeData: {},
+      // nodeData: {
+      //   class: "go.GraphLinksModel",
+      //   nodeDataArray: [
+      //     { key: "1", name: "Arron", title: "The Boss" },
+      //     { key: "2", name: "Tony", title: "Underboss" },
+      //     { key: "3", name: "Herman", title: "Advisor" },
+      //     { key: "4", name: "家樂福", title: "公司" },
+      //     { key: "5", name: "Ralph", title: "Capo MIA" },
+      //     { key: "6", name: "Silvio", title: "Consigliere" },
+      //     { key: "7", name: "統一食品", title: "公司" },
+      //     { key: "8", name: "Sal", title: "MIA" },
+      //     { key: "9", name: "台積電", title: "公司" },
+      //   ],
+      //   linkDataArray: [
+      //     { from: "1", to: "2" },
+      //     { from: "1", to: "3" },
+      //     { from: "2", to: "4" },
+      //     { from: "2", to: "5" },
+      //     { from: "2", to: "6" },
+      //     { from: "2", to: "7" },
+      //     { from: "4", to: "8" },
+      //     { from: "4", to: "9" },
+      //   ],
+      // },
     };
   },
   methods: {
     init() {
+      //為了要讓圖表可以重新渲染
+      if (!this.firstRender) {
+        var myDiag = document.getElementById("myDiag");
+        var parentDiv = document.getElementById("graph");
+        parentDiv.removeChild(myDiag);
+        var div = document.createElement("div");
+        div.setAttribute("id", "myDiag");
+        div.setAttribute(
+          "style",
+          "background-color: white; border: solid 1px black; height: 400px"
+        );
+        parentDiv.appendChild(div);
+      }
+
       var $ = go.GraphObject.make; // for conciseness in defining templates
       var that = this;
       this.$options.myDiagram = $(
@@ -425,16 +434,28 @@ export default {
       }
     },
     // Show the diagram's model in JSON format
-    save() {
+    async save(id) {
       this.nodeData = this.$options.myDiagram.model.toJson();
+      try {
+        await axios({
+          method: "put",
+          url: "/api/customers/graph/" + id,
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+          data: this.nodeData,
+        });
+      } catch (error) {
+        console.log(error);
+        console.log("can not put to potential customer");
+      }
       console.log("save");
       console.log(this.nodeData);
       this.$options.myDiagram.isModified = false;
     },
     load() {
       console.log("load");
-      this.$options.myDiagram.model = go.Model.fromJson(this.nodeData);
-      console.log(this.$options.myDiagram.model);
+      this.$options.myDiagram.model = go.Model.fromJson(this.response);
     },
     submitData() {
       // console.log(this.myDiagram);
@@ -454,21 +475,45 @@ export default {
         document.getElementById("comments").value
       ); //然后对这个对象的属性进行更改
     },
-    async searchId(id) {
+    async getId(id) {
       try {
-        await axios
-          .get("/api/customers/" + id)
-          .then((response) => (this.response = response.data));
-        console.log("success!");
+        await axios({
+          method: "get",
+          url: "/api/customers/graph/" + id,
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+        }).then((response) => (this.response = response.data));
+        console.log("success in search and load");
         console.log(this.response);
       } catch (error) {
         console.log(error);
         console.log("can not get data");
       }
     },
+    async searchId(id) {
+      try {
+        await axios({
+          method: "get",
+          url: "/api/customers/graph/" + id,
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+        }).then((response) => (this.response = response.data));
+        console.log("success in search and load");
+        console.log(this.response);
+        this.init();
+      } catch (error) {
+        console.log(error);
+        console.log("can not get data");
+      }
+    },
   },
-  mounted() {
+  async mounted() {
+    console.log("start");
+    await this.getId(this.inputId);
     this.init();
+    this.firstRender = false;
   },
 
   created() {},
