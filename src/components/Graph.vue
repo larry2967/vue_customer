@@ -47,8 +47,8 @@
           id="SaveButton"
           class="btn btn-outline-success"
           @click="
-            save(inputId)
-            //toast();
+            save(inputId);
+            toast();
           "
         >
           Save
@@ -127,8 +127,9 @@
 <script>
 import go from "gojs";
 import axios from "axios";
-// import { createToast } from "mosha-vue-toastify";
-// import "mosha-vue-toastify/dist/style.css";
+import { createToast } from "mosha-vue-toastify";
+import "mosha-vue-toastify/dist/style.css";
+
 export default {
   data() {
     return {
@@ -575,9 +576,9 @@ export default {
       console.log("load");
       this.$options.myDiagram.model = go.Model.fromJson(this.response);
     },
-    // toast() {
-    //   createToast("wow, so easy");
-    // },
+    toast() {
+      createToast("存入" + "P_ID: " + this.inputId + "的關係戶資料表");
+    },
     submitData() {
       // console.log(this.myDiagram);
       this.$options.myDiagram.model.setDataProperty(
