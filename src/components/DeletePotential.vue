@@ -63,12 +63,6 @@ export default {
       emit("deleteApi");
     };
 
-    // watch(
-    //   () => props.editInfo,
-    //   () => {
-    //     console.log(props.editInfo);
-    //   }
-    // );
     return { localData, deleteApi };
   },
 };

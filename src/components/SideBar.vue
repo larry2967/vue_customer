@@ -34,6 +34,6 @@ export default {
 
 <style scoped>
 .vsm--menu {
-  width: 240px;
+  width: 100px;
 }
 </style>

@@ -239,7 +239,7 @@ export default {
       job: "",
       marriage: "",
       consultantName: "",
-      stockAmount: { type: Number, default: null },
+      stockAmount: "",
       realEstateAmount: { type: Number, default: null },
       othersAmount: { type: Number, default: null },
     });

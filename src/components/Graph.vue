@@ -1,46 +1,134 @@
 <template>
-  <!-- 搜尋欄位 -->
-  <div class="input-group rounded">
-    <input
-      type="search"
-      class="form-control rounded"
-      v-model="inputId"
-      placeholder="Search"
-      aria-label="Search"
-      aria-describedby="search-addon"
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
+    />
+  </head>
+  <body>
+    <div class="container-xl">
+      <!-- 警告標語欄位 -->
 
-    <button id="SearchButton" @click="searchId(inputId)"></button>
-    <button id="SaveButton" @click="save(inputId)">Save</button>
-  </div>
-  <!--圖形欄位-->
-  <div id="graph">
-    <div
-      id="myDiag"
-      style="background-color: white; border: solid 1px black; height: 400px"
-    ></div>
-  </div>
+      <!-- 搜尋欄位 -->
+      <div class="input-group rounded">
+        <input
+          type="search"
+          class="form-control rounded"
+          v-model="inputId"
+          placeholder="Search"
+          aria-label="Search"
+          aria-describedby="search-addon"
+        />
+        <button
+          id="SearchButton"
+          class="btn btn-outline-success"
+          @click="searchId(inputId)"
+        >
+          <i class="fa fa-search"></i>
+        </button>
+        <button
+          id="SaveButton"
+          class="btn btn-outline-success"
+          @click="
+            save(inputId)
+            //toast();
+          "
+        >
+          Save
+        </button>
+      </div>
+      <!--圖形欄位-->
+      <div id="graph">
+        <div
+          id="myDiag"
+          style="
+            background-color: white;
+            border: solid 1px black;
+            height: 600px;
+          "
+        ></div>
+      </div>
+      <!--zoom in 欄位-->
+      <p class="row">
+        <button class="btn btn-outline-secondary col" id="zoomToFit">
+          Zoom to Fit
+        </button>
+        <button class="btn btn-outline-secondary col" id="centerRoot">
+          Center on root
+        </button>
+      </p>
+      <!--更新資料欄位-->
+      <div
+        class="container"
+        id="propertiesPanel"
+        style="
+          display: none;
+          background-color: aliceblue;
+          border: solid 1px black;
+        "
+      >
+        <div class="row d-flex justify-content-center">
+          <b>Properties</b><br />
+        </div>
+        <div class="row d-flex">
+          <span class="input-group-text col">Name:</span>
+          <input type="text" id="name" :value="addForm.name" /><br />
+          <span class="input-group-text col">Title:</span>
+          <input type="text" id="title" :value="addForm.title" /><br />
+          <span class="input-group-text col">Amount:</span>
+          <input
+            type="text"
+            id="stockAmount"
+            :value="addForm.stockAmount"
+          /><br />
+          <span class="input-group-text col">Proportion:</span>
+          <input
+            type="text"
+            id="stockPortion"
+            :value="addForm.Proportion"
+          /><br />
+          <div class="input-group" style="padding-top: 5px">
+            <span class="input-group-text">Comments:</span>
+            <input
+              class="form-control"
+              type="text"
+              id="comments"
+              :value="addForm.comments"
+            /><br />
+          </div>
+          <button class="btn btn-outline-secondary col" @click="submitData">
+            更改
+          </button>
+        </div>
+      </div>
+    </div>
 
-  <div
-    id="propertiesPanel"
-    style="display: none; background-color: aliceblue; border: solid 1px black"
-  >
-    <b>Properties</b><br />
-    Name:
-    <input type="text" id="name" :value="addForm.name" /><br />
-    Title:
-    <input type="text" id="title" :value="addForm.title" /><br />
-    Comments:
-    <input type="text" id="comments" :value="addForm.comments" /><br />
-    <button type="primary" @click="submitData">更改</button>
-  </div>
-
-  <!-- * * * * * * * * * * * * * -->
-  <!--  End of GoJS sample code  -->
+    <!-- * * * * * * * * * * * * * -->
+    <!--  End of GoJS sample code  -->
+  </body>
 </template>
 <script>
 import go from "gojs";
 import axios from "axios";
+// import { createToast } from "mosha-vue-toastify";
+// import "mosha-vue-toastify/dist/style.css";
 export default {
   data() {
     return {
@@ -51,30 +139,6 @@ export default {
       selectNode: {},
       myDiagram: null,
       nodeData: {},
-      // nodeData: {
-      //   class: "go.GraphLinksModel",
-      //   nodeDataArray: [
-      //     { key: "1", name: "Arron", title: "The Boss" },
-      //     { key: "2", name: "Tony", title: "Underboss" },
-      //     { key: "3", name: "Herman", title: "Advisor" },
-      //     { key: "4", name: "家樂福", title: "公司" },
-      //     { key: "5", name: "Ralph", title: "Capo MIA" },
-      //     { key: "6", name: "Silvio", title: "Consigliere" },
-      //     { key: "7", name: "統一食品", title: "公司" },
-      //     { key: "8", name: "Sal", title: "MIA" },
-      //     { key: "9", name: "台積電", title: "公司" },
-      //   ],
-      //   linkDataArray: [
-      //     { from: "1", to: "2" },
-      //     { from: "1", to: "3" },
-      //     { from: "2", to: "4" },
-      //     { from: "2", to: "5" },
-      //     { from: "2", to: "6" },
-      //     { from: "2", to: "7" },
-      //     { from: "4", to: "8" },
-      //     { from: "4", to: "9" },
-      //   ],
-      // },
     };
   },
   methods: {
@@ -88,7 +152,7 @@ export default {
         div.setAttribute("id", "myDiag");
         div.setAttribute(
           "style",
-          "background-color: white; border: solid 1px black; height: 400px"
+          "background-color: white; border: solid 1px black; height: 600px"
         );
         parentDiv.appendChild(div);
       }
@@ -120,6 +184,21 @@ export default {
             alternatePortSpot: new go.Spot(0.01, 1, 10, 0),
             alternateChildPortSpot: go.Spot.Left,
           }),
+          "clickCreatingTool.insertPart": function (loc) {
+            // scroll to the new node
+            var node = go.ClickCreatingTool.prototype.insertPart.call(
+              that,
+              loc
+            );
+            if (node !== null) {
+              that.diagram.select(node);
+              that.diagram.commandHandler.scrollToPart(node);
+              that.diagram.commandHandler.editTextBlock(
+                node.findObject("NAMETB")
+              );
+            }
+            return node;
+          },
           // support editing the properties of the selected person in HTML
           ChangedSelection: onSelectionChanged,
           TextEdited: onTextEdited,
@@ -131,8 +210,9 @@ export default {
       // when the document is modified, add a "*" to the title and enable the "Save" button
 
       this.$options.myDiagram.addDiagramListener("Modified", () => {
-        var button = document.getElementById("SaveButton");
-        if (button) button.disabled = !this.$options.myDiagram.isModified;
+        // 打開的話，只能讓使用者在編輯過後panel才能save;
+        // var button = document.getElementById("SaveButton");
+        // if (button) button.disabled = !this.$options.myDiagram.isModified;
         var idx = document.title.indexOf("*");
         if (this.$options.myDiagram.isModified) {
           if (idx < 0) document.title += "*";
@@ -213,14 +293,14 @@ export default {
             margin: new go.Margin(3, 3, 0, 3),
             defaultAlignment: go.Spot.Left,
           },
-          $(go.RowColumnDefinition, { column: 2, width: 4 }),
+          $(go.RowColumnDefinition, { column: 2, width: 6 }),
           $(
             go.TextBlock, // the name
             {
               row: 0,
               column: 0,
               columnSpan: 5,
-              font: "bold 9pt sans-serif",
+              font: "bold 12pt sans-serif",
               editable: true,
               isMultiline: false,
               stroke: "white",
@@ -258,16 +338,33 @@ export default {
             new go.Binding("text", "key")
           ),
           // $(go.TextBlock, "Boss: ", textStyle(), { row: 2, column: 3 }),
+          // $(
+          //   go.TextBlock,
+          //   textStyle(),
+          //   { row: 2, column: 4 },
+          //   new go.Binding("text", "parent")
+          // ),
+          $(go.TextBlock, "Stock Amount: ", textStyle(), { row: 3, column: 0 }),
           $(
             go.TextBlock,
             textStyle(),
-            { row: 2, column: 4 },
-            new go.Binding("text", "parent")
+            { row: 3, column: 1 },
+            new go.Binding("text", "stockAmount")
+          ),
+          $(go.TextBlock, "Stock Proportion: ", textStyle(), {
+            row: 4,
+            column: 0,
+          }),
+          $(
+            go.TextBlock,
+            textStyle(),
+            { row: 4, column: 1 },
+            new go.Binding("text", "stockPortion: ")
           ),
           $(
             go.TextBlock, // the comments
             {
-              row: 3,
+              row: 5,
               column: 0,
               columnSpan: 5,
               font: "italic 9pt sans-serif",
@@ -280,7 +377,7 @@ export default {
             new go.Binding("text", "comments").makeTwoWay()
           ),
           $("TreeExpanderButton", {
-            row: 4,
+            row: 6,
             columnSpan: 99,
             alignment: go.Spot.Center,
           })
@@ -339,6 +436,18 @@ export default {
 
       // read in the JSON-format data from the "mySavedModel" element
       this.load();
+
+      document.getElementById("zoomToFit").addEventListener("click", () => {
+        this.$options.myDiagram.commandHandler.zoomToFit();
+      });
+
+      document.getElementById("centerRoot").addEventListener("click", () => {
+        this.$options.myDiagram.scale = 1;
+        this.$options.myDiagram.commandHandler.scrollToPart(
+          this.$options.myDiagram.findNodeForKey(1)
+        );
+      });
+
       // when a node is double-clicked, add a child to it
       function nodeDoubleClick(e, obj) {
         console.log("雙擊node");
@@ -393,11 +502,16 @@ export default {
           document.getElementById("propertiesPanel").style.display = "none";
           document.getElementById("name").value = "";
           document.getElementById("title").value = "";
+          document.getElementById("stockAmount").value = "";
+          document.getElementById("stockPortion").value = "";
           document.getElementById("comments").value = "";
         } else {
           document.getElementById("propertiesPanel").style.display = "block";
           document.getElementById("name").value = data.name || "";
           document.getElementById("title").value = data.title || "";
+          document.getElementById("stockAmount").value = data.stockAmount || "";
+          document.getElementById("stockPortion").value =
+            data.stockPortion || "";
           document.getElementById("comments").value = data.comments || "";
         }
       }
@@ -428,6 +542,10 @@ export default {
             model.setDataProperty(data, "title", text);
           } else if (field === "comments") {
             model.setDataProperty(data, "comments", text);
+          } else if (field === "stockAmount") {
+            model.setDataProperty(data, "stockAmount", text);
+          } else if (field === "stockPortion") {
+            model.setDataProperty(data, "stockPortion", text);
           }
           model.commitTransaction("modified " + field);
         }
@@ -457,23 +575,36 @@ export default {
       console.log("load");
       this.$options.myDiagram.model = go.Model.fromJson(this.response);
     },
+    // toast() {
+    //   createToast("wow, so easy");
+    // },
     submitData() {
       // console.log(this.myDiagram);
       this.$options.myDiagram.model.setDataProperty(
         this.selectNode,
         "name",
         document.getElementById("name").value
-      ); //然后对这个对象的属性进行更改
+      );
       this.$options.myDiagram.model.setDataProperty(
         this.selectNode,
         "title",
         document.getElementById("title").value
-      ); //然后对这个对象的属性进行更改
+      );
       this.$options.myDiagram.model.setDataProperty(
         this.selectNode,
         "comments",
         document.getElementById("comments").value
-      ); //然后对这个对象的属性进行更改
+      );
+      this.$options.myDiagram.model.setDataProperty(
+        this.selectNode,
+        "stockAmount",
+        document.getElementById("stockAmount").value
+      );
+      this.$options.myDiagram.model.setDataProperty(
+        this.selectNode,
+        "stockPortion",
+        document.getElementById("stockPortion").value
+      );
     },
     async getId(id) {
       try {
@@ -519,3 +650,12 @@ export default {
   created() {},
 };
 </script>
+
+<style scoped>
+body {
+  color: #566787;
+  background: #f5f5f5;
+  font-family: "Varela Round", sans-serif;
+  font-size: 13px;
+}
+</style>

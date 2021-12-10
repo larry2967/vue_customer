@@ -26,20 +26,25 @@
   <body>
     <div class="container-xl">
       <!-- 搜尋欄位 -->
-      <div class="input-group rounded">
+
+      <form class="d-flex input-group rounded">
         <input
           type="search"
-          class="form-control rounded"
+          class="form-control"
           v-model="searchFilter.search_id"
           placeholder="Search"
           aria-label="Search"
           aria-describedby="search-addon"
         />
 
-        <button class="btn btn-light" @click="search(searchFilter.search_id)">
+        <button
+          class="btn btn-outline-success"
+          @click="search(searchFilter.search_id)"
+        >
           <i class="fa fa-search"></i>
         </button>
-      </div>
+      </form>
+
       <!-- 表格欄位 -->
 
       <div class="table-responsive">
@@ -47,7 +52,7 @@
           <div class="table-title">
             <div class="row">
               <div class="col-sm-6">
-                <h2>Manage Potential<b>Customers</b></h2>
+                <h2>關係戶資料表</h2>
               </div>
               <div class="col-sm-6">
                 <a
@@ -178,7 +183,6 @@
 
 <style scoped>
 /* for beautiful dynamic table */
-
 body {
   color: #566787;
   background: #f5f5f5;
@@ -436,6 +440,7 @@ export default {
         console.log("success!");
         responseApi.getList = response.data;
         searchFilter.data = response.data;
+        console.log(JSON.stringify(searchFilter.data));
       } catch (error) {
         console.log(error);
         console.log("can not get any response");
@@ -499,7 +504,7 @@ export default {
     const look = (item) => {
       editInfo.data = item;
     };
-    const search = async (search_id) => {
+    const search = (search_id) => {
       if (search_id.length > 0) {
         console.log(JSON.stringify(responseApi.getList));
         searchFilter.data = responseApi.getList.filter(
@@ -509,7 +514,7 @@ export default {
         console.log(JSON.stringify(searchFilter.data));
       } else {
         console.log("空值");
-        searchFilter.data = responseApi.getList;
+        // searchFilter.data = responseApi.getList;
       }
     };
 
@@ -517,18 +522,7 @@ export default {
       getData();
     });
 
-    onMounted(() => {
-      var scripts = [
-        "https://code.jquery.com/jquery-3.5.1.min.js",
-        "https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js",
-        "https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js",
-      ];
-      scripts.forEach((script) => {
-        let tag = document.createElement("script");
-        tag.setAttribute("src", script);
-        document.body.appendChild(tag);
-      });
-    });
+    onMounted(() => {});
     return {
       responseApi,
       look,
@@ -547,24 +541,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.container-xl {
-  /* padding-right: 0px; */
-  padding-left: 0px;
-  position: relative;
-  /* border-left: 0px; */
-}
-.container,
-.container-lg,
-.container-md,
-.container-sm,
-.container-xl {
-  max-width: none;
-}
-.table-wrapper[data-v-abb9de30] {
-  background: #f5f5f5;
-}
-.table-responsive[data-v-abb9de30] {
-  margin: 0px;
-}
-</style>
+<style scoped></style>

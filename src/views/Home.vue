@@ -1,7 +1,5 @@
 <template>
-  <div class="container-xl">
-    <Graph></Graph>
-  </div>
+  <Graph></Graph>
 </template>
 
 <script>
